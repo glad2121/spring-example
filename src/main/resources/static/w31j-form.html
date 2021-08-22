@@ -1,15 +1,35 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Greeting</title>
+  <title>Windows-31J Form</title>
   <meta http-equiv="Content-Type" content="text/html; charset=Windows-31J" />
 </head>
 <body>
+<h1>Windows-31J Form</h1>
+<h2>Greeting</h2>
 <form action="/greeting">
   <label for="name">Name: </label>
   <input type="text" name="name" maxlength="5"><br>
   <input type="hidden" name="encoding" value="Windows-31J">
   <input type="submit" value="送信">
+</form>
+
+<h2>Person</h2>
+<form action="/person" method="post">
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" id="name" name="name" value="" /></td>
+    </tr>
+    <tr>
+      <td>Age:</td>
+      <td><input type="text" id="age" name="age" value="" /></td>
+    </tr>
+    <tr>
+      <td><button type="submit">送信</button></td>
+    </tr>
+  </table>
+  <input type="hidden" name="encoding" value="Windows-31J">
 </form>
 </body>
 </html>

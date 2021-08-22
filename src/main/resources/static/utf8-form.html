@@ -1,14 +1,33 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Greeting</title>
+  <title>UTF-8 Form</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<h1>UTF-8 Form</h1>
+<h2>Greeting</h2>
 <form action="/greeting">
   <label for="name">Name: </label>
   <input type="text" name="name" maxlength="5"><br>
   <input type="submit" value="送信">
+</form>
+
+<h2>Person</h2>
+<form action="/person" method="post">
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" id="name" name="name" value="" /></td>
+    </tr>
+    <tr>
+      <td>Age:</td>
+      <td><input type="text" id="age" name="age" value="" /></td>
+    </tr>
+    <tr>
+      <td><button type="submit">送信</button></td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>
