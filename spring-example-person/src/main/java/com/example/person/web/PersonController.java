@@ -1,9 +1,10 @@
-package com.example.web.person;
+package com.example.person.web;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.HtmlUtils;
 
 import com.example.common.util.CommonUtils;
-import com.example.web.person.model.PersonForm;
+import com.example.person.service.PersonService;
+import com.example.person.service.model.Person;
+import com.example.person.web.model.PersonForm;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/person")
 public class PersonController implements WebMvcConfigurer {
+
+    PersonService personService;
+
+    @Autowired
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -52,6 +62,10 @@ public class PersonController implements WebMvcConfigurer {
         if (bindingResult.hasErrors()) {
             return "person/form";
         }
+
+        Person person = PersonConverter.toPerson(personForm);
+
+        personService.execute(person);
 
         redirectAttributes.addFlashAttribute(personForm);
         return "redirect:/person/results";

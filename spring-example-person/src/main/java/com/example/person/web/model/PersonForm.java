@@ -1,4 +1,4 @@
-package com.example.web.person.model;
+package com.example.person.web.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

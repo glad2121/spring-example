@@ -1,1 +1,6 @@
 rootProject.name = 'spring-example'
+
+include 'spring-example-common'
+include 'spring-example-greeting'
+include 'spring-example-person'
+include 'spring-example-app'

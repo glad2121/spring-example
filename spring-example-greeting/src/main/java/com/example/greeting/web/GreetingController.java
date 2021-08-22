@@ -1,4 +1,4 @@
-package com.example.web.greeting;
+package com.example.greeting.web;
 
 import java.io.UnsupportedEncodingException;
 
