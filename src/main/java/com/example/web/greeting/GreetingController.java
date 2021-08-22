@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +29,7 @@ public class GreetingController {
         } catch (UnsupportedEncodingException e) {
             log.warn("", e);
         }
-        name = decodeNumericCharRef(name);
+        name = HtmlUtils.htmlUnescape(name);
         log.info("name: {} ({})", toHexString(name), name);
         model.addAttribute("name", name);
         return "greeting/greeting";
@@ -38,15 +39,6 @@ public class GreetingController {
         return s.chars()
             .mapToObj(c -> String.format("%02X", c))
             .collect(Collectors.joining(" "));
-    }
-
-    static String decodeNumericCharRef(String s) {
-        Pattern p = Pattern.compile("&#(\\d+);");
-        return p.matcher(s).replaceAll(mr -> codePointsToString(Integer.parseInt(mr.group(1))));
-    }
-
-    static String codePointsToString(int... codePoints) {
-        return new String(codePoints, 0, codePoints.length);
     }
 
 }
