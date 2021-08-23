@@ -9,3 +9,34 @@ version = '0.1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    test {
+        reports.html.enabled = false
+    }
+}
+
+task testReport(type: TestReport) {
+    reportOn subprojects.tasks.test.binResultsDir
+    destinationDir file("$buildDir/reports/tests/test")
+}
+
+apply plugin: 'jacoco'
+
+task jacocoMerge(type: JacocoMerge) {
+    executionData project(':spring-example-common').tasks.test.jacoco.destinationFile
+    executionData project(':spring-example-greeting').tasks.test.jacoco.destinationFile
+    executionData project(':spring-example-person').tasks.test.jacoco.destinationFile
+    executionData project(':spring-example-app').tasks.test.jacoco.destinationFile
+}
+
+task jacocoReport(type: JacocoReport) {
+    dependsOn jacocoMerge
+    executionData jacocoMerge.destinationFile
+    additionalSourceDirs files(subprojects.sourceSets.main.allSource.srcDirs)
+    additionalClassDirs files(subprojects.sourceSets.main.output)
+}
+
+task report(dependsOn: ['testReport', 'jacocoReport'])
