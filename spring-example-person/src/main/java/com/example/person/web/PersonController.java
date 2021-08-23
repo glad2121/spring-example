@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.HtmlUtils;
 
 import com.example.common.util.CommonUtils;
 import com.example.person.service.PersonService;
@@ -77,7 +76,7 @@ public class PersonController implements WebMvcConfigurer {
         } catch (UnsupportedEncodingException e) {
             log.error("decode error", e);
         }
-        return HtmlUtils.htmlUnescape(s);
+        return CommonUtils.htmlUnescape(s);
     }
 
 }
