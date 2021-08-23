@@ -19,35 +19,35 @@ spring-example-app      : Spring Boot アプリケーション
 
 ## 参考文献・URL
 
-- Spring<br>
+- Spring  
   <https://spring.io/>
-- Spring リファレンスドキュメント<br>
+- Spring リファレンスドキュメント  
   <https://spring.pleiades.io/>
-    - Spring Boot
+    - Spring Boot  
       <https://spring.pleiades.io/projects/spring-boot>
-    - Spring Framework
+    - Spring Framework  
       <https://spring.pleiades.io/projects/spring-framework>
-    - アプリケーションプロパティ設定一覧
+    - アプリケーションプロパティ設定一覧  
       <https://spring.pleiades.io/spring-boot/docs/current/reference/html/application-properties.html>
-    - DevTools と Web アプリケーション
+    - DevTools と Web アプリケーション  
       <https://spring.pleiades.io/guides/gs/serving-web-content/>
-    - Thymeleaf 画面フォーム入力チェック
+    - Thymeleaf 画面フォーム入力チェック  
       <https://spring.pleiades.io/guides/gs/validating-form-input/>
-    - マルチモジュールプロジェクトの作成
+    - マルチモジュールプロジェクトの作成  
       <https://spring.pleiades.io/guides/gs/multi-module/>
-- Spring Boot上で動作するプログラムの文字コードをShift_JISに変更してみた<br>
+- Spring Boot上で動作するプログラムの文字コードをShift_JISに変更してみた  
   <https://www.purin-it.com/sts-make-spring-boot-shift-jis>
-- Project Lombok<br>
+- Project Lombok  
   <https://projectlombok.org/>
-- Simple Logging Facade for Java (SLF4J)<br>
+- Simple Logging Facade for Java (SLF4J)  
   <http://www.slf4j.org/>
-- AssertJ - fluent assertions java library<br>
+- AssertJ - fluent assertions java library  
   <https://assertj.github.io/doc/>
-- Mockito framework site<br>
+- Mockito framework site  
   <https://site.mockito.org/>
-- Gradle User Manual<br>
+- Gradle User Manual  
   <https://docs.gradle.org/current/userguide/userguide.html>
-- Gradleのマルチプロジェクト構成でJUnitやJacocoのレポートを集計する<br>
+- Gradleのマルチプロジェクト構成でJUnitやJacocoのレポートを集計する  
   <https://qiita.com/clomie/items/05cd592aa9da56edc3d3>
-- Pleiades All in One<br>
+- Pleiades All in One  
   <https://mergedoc.osdn.jp/>
