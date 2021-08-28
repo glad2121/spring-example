@@ -10,7 +10,7 @@ import lombok.Data;
 public class PersonForm {
 
     @NotNull
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     private String name;
 
     @NotNull

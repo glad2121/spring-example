@@ -44,7 +44,8 @@ public class PersonController implements WebMvcConfigurer {
     }
 
     @PostMapping
-    public String checkPersonInfo(@Valid PersonForm personForm,
+    public String checkPersonInfo(
+            @Valid PersonForm personForm,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 

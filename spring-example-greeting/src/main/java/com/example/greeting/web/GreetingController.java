@@ -17,8 +17,8 @@ public class GreetingController {
 
     @GetMapping("/greeting")
     public String greeting(
-            @RequestParam(name="name", required = false, defaultValue = "World") String name,
-            @RequestParam(name="encoding", required = false) String encoding,
+            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
+            @RequestParam(name = "encoding", required = false) String encoding,
             Model model) {
 
         log.info("name: {} ({})", CommonUtils.toHexString(name), name);

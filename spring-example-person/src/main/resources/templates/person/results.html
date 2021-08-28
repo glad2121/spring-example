@@ -1,7 +1,14 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Person Results</title>
+  <meta charset="UTF-8">
+</head>
 <body>
 <h1>Person Results</h1>
-<p th:text="'Hello, ' + ${personForm.name} + '!'" />
+<p>Hello, [[${personForm.name}]]!</p>
+<p>ようこそ、[[${personForm.name}]] さん！</p>
 <p>Congratulations! You are old enough to sign up for this site.</p>
+<p>おめでとうございます！このサイトに登録可能な年齢です。</p>
 </body>
 </html>
