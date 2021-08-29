@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +18,16 @@ import com.example.person.service.PersonService;
 import com.example.person.service.model.Person;
 import com.example.person.web.model.PersonForm;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/person")
+@RequiredArgsConstructor
+@Slf4j
 public class PersonController implements WebMvcConfigurer {
 
-    PersonService personService;
-
-    @Autowired
-    public PersonController(PersonService personService) {
-        this.personService = personService;
-    }
+    final PersonService personService;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

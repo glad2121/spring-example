@@ -19,13 +19,14 @@ subprojects {
 }
 
 task testReport(type: TestReport) {
-    reportOn subprojects.tasks.test.binResultsDir
+    reportOn subprojects*.test
     destinationDir file("$buildDir/reports/tests/test")
 }
 
 apply plugin: 'jacoco'
 
 task jacocoMerge(type: JacocoMerge) {
+    dependsOn subprojects.test
     executionData project(':spring-example-common').tasks.test.jacoco.destinationFile
     executionData project(':spring-example-greeting').tasks.test.jacoco.destinationFile
     executionData project(':spring-example-person').tasks.test.jacoco.destinationFile
