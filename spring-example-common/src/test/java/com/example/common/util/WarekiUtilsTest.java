@@ -22,18 +22,22 @@ class WarekiUtilsTest {
 
     @Test
     void testCheckWarekiY() {
-        assertThat(WarekiUtils.checkWareki("H31"))
+        assertThat(WarekiUtils.checkWareki("H30"))
             .hasFieldOrPropertyWithValue("status", VALID)
-            .hasFieldOrPropertyWithValue("gregorian", "2019")
-            .hasFieldOrPropertyWithValue("gregorianYear", 2019);
-        assertThat(WarekiUtils.checkWareki("R01"))
-            .hasFieldOrPropertyWithValue("status", START_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "2018")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2018);
+        assertThat(WarekiUtils.checkWareki("H31"))
+            .hasFieldOrPropertyWithValue("status", LAST_YEAR)
             .hasFieldOrPropertyWithValue("gregorian", "2019")
             .hasFieldOrPropertyWithValue("gregorianYear", 2019);
         assertThat(WarekiUtils.checkWareki("H32"))
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "2020")
             .hasFieldOrPropertyWithValue("gregorianYear", 2020);
+        assertThat(WarekiUtils.checkWareki("R01"))
+            .hasFieldOrPropertyWithValue("status", FIRST_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "2019")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2019);
         assertThat(WarekiUtils.checkWareki("R02"))
             .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "2020")
@@ -42,38 +46,54 @@ class WarekiUtilsTest {
 
     @Test
     void testCheckWarekiYM() {
-        assertThat(WarekiUtils.checkWareki("R0101"))
-            .hasFieldOrPropertyWithValue("status", START_YEAR)
-            .hasFieldOrPropertyWithValue("gregorian", "201901")
-            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 1));
-        assertThat(WarekiUtils.checkWareki("H3104"))
+        assertThat(WarekiUtils.checkWareki("H3103"))
             .hasFieldOrPropertyWithValue("status", VALID)
+            .hasFieldOrPropertyWithValue("gregorian", "201903")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 3));
+        assertThat(WarekiUtils.checkWareki("H3104"))
+            .hasFieldOrPropertyWithValue("status", LAST_MONTH)
             .hasFieldOrPropertyWithValue("gregorian", "201904")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 4));
         assertThat(WarekiUtils.checkWareki("H3105"))
+            .hasFieldOrPropertyWithValue("status", LAST_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "201905")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 5));
+        assertThat(WarekiUtils.checkWareki("H3201"))
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
-            .hasFieldOrPropertyWithValue("gregorian", "201905")
-            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 5));
+            .hasFieldOrPropertyWithValue("gregorian", "202001")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2020, 1));
+        assertThat(WarekiUtils.checkWareki("R0101"))
+            .hasFieldOrPropertyWithValue("status", FIRST_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "201901")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 1));
         assertThat(WarekiUtils.checkWareki("R0105"))
-            .hasFieldOrPropertyWithValue("status", VALID)
+            .hasFieldOrPropertyWithValue("status", FIRST_MONTH)
             .hasFieldOrPropertyWithValue("gregorian", "201905")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 5));
+        assertThat(WarekiUtils.checkWareki("R0106"))
+            .hasFieldOrPropertyWithValue("status", VALID)
+            .hasFieldOrPropertyWithValue("gregorian", "201906")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2019, 6));
     }
 
     @Test
     void testCheckWarekiYMD() {
-        assertThat(WarekiUtils.checkWareki("R010101"))
-            .hasFieldOrPropertyWithValue("status", START_YEAR)
-            .hasFieldOrPropertyWithValue("gregorian", "20190101")
-            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2019, 1, 1));
         assertThat(WarekiUtils.checkWareki("H310430"))
             .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "20190430")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2019, 4, 30));
         assertThat(WarekiUtils.checkWareki("H310501"))
-            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("status", LAST_YEAR)
             .hasFieldOrPropertyWithValue("gregorian", "20190501")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2019, 5, 1));
+        assertThat(WarekiUtils.checkWareki("H320101"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "20200101")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2020, 1, 1));
+        assertThat(WarekiUtils.checkWareki("R010101"))
+            .hasFieldOrPropertyWithValue("status", FIRST_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "20190101")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2019, 1, 1));
         assertThat(WarekiUtils.checkWareki("R010501"))
             .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "20190501")

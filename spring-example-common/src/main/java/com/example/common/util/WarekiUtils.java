@@ -5,7 +5,6 @@ import static com.example.common.util.WarekiResult.Status.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,18 +25,6 @@ public class WarekiUtils {
         map.put("M", new WarekiRange(1868, 6,  1,  1, 45,  7, 29));
         WAREKI_RANGE_MAP = Collections.unmodifiableMap(map);
     }
-
-    static final WarekiResult ALL0_YEAR = new WarekiResult(ALL0, "0000", null);
-
-    static final WarekiResult ALL0_YEAR_MONTH = new WarekiResult(ALL0, "000000", null);
-
-    static final WarekiResult ALL0_RESULT = new WarekiResult(ALL0, "00000000", null);
-
-    static final WarekiResult ALL9_YEAR = new WarekiResult(ALL9, "9999", null);
-
-    static final WarekiResult ALL9_YEAR_MONTH = new WarekiResult(ALL9, "999999", null);
-
-    static final WarekiResult ALL9_RESULT = new WarekiResult(ALL9, "99999999", null);
 
     static final WarekiResult INVALID_RESULT = new WarekiResult(INVALID, null, null);
 
@@ -73,36 +60,6 @@ public class WarekiUtils {
     }
 
     public static WarekiResult checkWareki(String era, int year) {
-        if (year == 0) {
-            return ALL0_YEAR;
-        }
-        if (year == 99) {
-            return ALL9_YEAR;
-        }
-        return checkWareki0(era, year, 1, 1).getYearResult();
-    }
-
-    public static WarekiResult checkWareki(String era, int year, int month) {
-        if (year == 0 && month == 0) {
-            return ALL0_YEAR_MONTH;
-        }
-        if (year == 99 && month == 99) {
-            return ALL9_YEAR_MONTH;
-        }
-        return checkWareki0(era, year, month, 1).getYearMonthResult();
-    }
-
-    public static WarekiResult checkWareki(String era, int year, int month, int day) {
-        if (year == 0 && month == 0 && day == 0) {
-            return ALL0_RESULT;
-        }
-        if (year == 99 && month == 99 && day == 99) {
-            return ALL9_RESULT;
-        }
-        return checkWareki0(era, year, month, day);
-    }
-
-    static WarekiResult checkWareki0(String era, int year, int month, int day) {
         WarekiRange range = WAREKI_RANGE_MAP.get(era);
         if (range == null) {
             return INVALID_ERA_RESULT;
@@ -110,22 +67,97 @@ public class WarekiUtils {
         if (year < range.firstYear) {
             return INVALID_DATE_RESULT;
         }
-        int gYear = range.startYear + year - 1;
+        int gYear = range.baseYear + year - 1;
         try {
-            LocalDate localDate = LocalDate.of(gYear, month, day);
-            String gregorian = DateTimeFormatter.BASIC_ISO_DATE.format(localDate);
+            LocalDate localDate = LocalDate.of(gYear, 1, 1);
+            String gregorian = String.format("%04d", gYear);
+            if (year == range.firstYear) {
+                return new WarekiResult(FIRST_YEAR, gregorian, localDate);
+            }
+            if (year < range.lastYear) {
+                return new WarekiResult(VALID, gregorian, localDate);
+            }
+            if (year == range.lastYear) {
+                return new WarekiResult(LAST_YEAR, gregorian, localDate);
+            }
+            return new WarekiResult(EXCEEDED, gregorian, localDate);
+        } catch (DateTimeException e) {
+            return INVALID_DATE_RESULT;
+        }
+    }
+
+    public static WarekiResult checkWareki(String era, int year, int month) {
+        WarekiRange range = WAREKI_RANGE_MAP.get(era);
+        if (range == null) {
+            return INVALID_ERA_RESULT;
+        }
+        if (year < range.firstYear) {
+            return INVALID_DATE_RESULT;
+        }
+        int gYear = range.baseYear + year - 1;
+        try {
+            LocalDate localDate = LocalDate.of(gYear, month, 1);
+            String gregorian = String.format("%04d%02d", gYear, month);
             if (year == range.firstYear) {
                 if (month < range.firstMonth) {
-                    return new WarekiResult(START_YEAR, gregorian, localDate);
+                    return new WarekiResult(FIRST_YEAR, gregorian, localDate);
                 }
-                if (month == range.firstMonth && day < range.firstDay) {
-                    return new WarekiResult(START_MONTH, gregorian, localDate);
+                if (month == range.firstMonth) {
+                    return new WarekiResult(FIRST_MONTH, gregorian, localDate);
                 }
             }
-            if (year < range.lastYear
-                    || (year == range.lastYear && (month < range.lastMonth
-                    || (month == range.lastMonth && day <= range.lastDay)))) {
+            if (year < range.lastYear) {
                 return new WarekiResult(VALID, gregorian, localDate);
+            }
+            if (year == range.lastYear) {
+                if (month < range.lastMonth) {
+                    return new WarekiResult(VALID, gregorian, localDate);
+                }
+                if (month == range.lastMonth) {
+                    return new WarekiResult(LAST_MONTH, gregorian, localDate);
+                }
+                return new WarekiResult(LAST_YEAR, gregorian, localDate);
+            }
+            return new WarekiResult(EXCEEDED, gregorian, localDate);
+        } catch (DateTimeException e) {
+            return INVALID_DATE_RESULT;
+        }
+    }
+
+    public static WarekiResult checkWareki(String era, int year, int month, int day) {
+        WarekiRange range = WAREKI_RANGE_MAP.get(era);
+        if (range == null) {
+            return INVALID_ERA_RESULT;
+        }
+        if (year < range.firstYear) {
+            return INVALID_DATE_RESULT;
+        }
+        int gYear = range.baseYear + year - 1;
+        try {
+            LocalDate localDate = LocalDate.of(gYear, month, day);
+            String gregorian = String.format("%04d%02d%02d", gYear, month, day);
+            if (year == range.firstYear) {
+                if (month < range.firstMonth) {
+                    return new WarekiResult(FIRST_YEAR, gregorian, localDate);
+                }
+                if (month == range.firstMonth && day < range.firstDay) {
+                    return new WarekiResult(FIRST_MONTH, gregorian, localDate);
+                }
+            }
+            if (year < range.lastYear) {
+                return new WarekiResult(VALID, gregorian, localDate);
+            }
+            if (year == range.lastYear) {
+                if (month < range.lastMonth) {
+                    return new WarekiResult(VALID, gregorian, localDate);
+                }
+                if (month == range.lastMonth) {
+                    if (day <= range.lastDay) {
+                        return new WarekiResult(VALID, gregorian, localDate);
+                    }
+                    return new WarekiResult(LAST_MONTH, gregorian, localDate);
+                }
+                return new WarekiResult(LAST_YEAR, gregorian, localDate);
             }
             return new WarekiResult(EXCEEDED, gregorian, localDate);
         } catch (DateTimeException e) {
@@ -140,31 +172,13 @@ public class WarekiUtils {
         }
         int gYear = Integer.parseInt(m.group(1));
         if (m.group(2) == null) {
-            if (gYear == 0) {
-                return "M00";
-            }
-            if (gYear == 99) {
-                return "R00";
-            }
             return toWareki(gYear);
         }
         int month = Integer.parseInt(m.group(2));
         if (m.group(3) == null) {
-            if (gYear == 0 && month == 0) {
-                return "M0000";
-            }
-            if (gYear == 99 && month == 99) {
-                return "R9999";
-            }
             return toWareki(YearMonth.of(gYear, month));
         }
         int day = Integer.parseInt(m.group(3));
-        if (gYear == 0 && month == 0 && day == 0) {
-            return "M000000";
-        }
-        if (gYear == 99 && month == 99 && day == 99) {
-            return "R999999";
-        }
         return toWareki(LocalDate.of(gYear, month, day));
     }
 
@@ -172,7 +186,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -189,7 +203,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -208,7 +222,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -230,51 +244,24 @@ public class WarekiUtils {
             String era = m.group(1);
             int year = Integer.parseInt(m.group(2));
             if (m.group(4) == null) {
-                if (year == 0) {
-                    return "";
-                }
                 return String.format("%s%2d", era, year);
             }
             int month = Integer.parseInt(m.group(4));
             if (m.group(5) == null) {
-                if (year == 0 && month == 0) {
-                    return "";
-                }
                 return String.format("%s%2d.%2d", era, year, month);
             }
             int day = Integer.parseInt(m.group(5));
-            if (year == 0 && month == 0 && day == 0) {
-                return "";
-            }
             return String.format("%s%2d.%2d.%2d", era, year, month, day);
         }
         int gYear = Integer.parseInt(m.group(3));
         if (m.group(4) == null) {
-            if (gYear == 0) {
-                return "";
-            }
-            if (gYear == 99) {
-                return "R99";
-            }
             return toWarekiText(gYear);
         }
         int month = Integer.parseInt(m.group(4));
         if (m.group(5) == null) {
-            if (gYear == 0 && month == 0) {
-                return "";
-            }
-            if (gYear == 99 && month == 99) {
-                return "R99.99";
-            }
             return toWarekiText(YearMonth.of(gYear, month));
         }
         int day = Integer.parseInt(m.group(5));
-        if (gYear == 0 && month == 0 && day == 0) {
-            return "";
-        }
-        if (gYear == 99 && month == 99 && day == 99) {
-            return "R99.99.99";
-        }
         return toWarekiText(LocalDate.of(gYear, month, day));
     }
 
@@ -282,7 +269,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -299,7 +286,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -318,7 +305,7 @@ public class WarekiUtils {
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
             WarekiRange range = entry.getValue();
-            int year = gYear - range.startYear + 1;
+            int year = gYear - range.baseYear + 1;
             if (100 <= year) {
                 break;
             }
@@ -333,7 +320,7 @@ public class WarekiUtils {
 
     @RequiredArgsConstructor
     static class WarekiRange {
-        final int startYear;
+        final int baseYear;
         final int firstYear;
         final int firstMonth;
         final int firstDay;

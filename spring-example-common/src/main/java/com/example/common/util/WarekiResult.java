@@ -22,24 +22,37 @@ public class WarekiResult {
         return (localDate == null) ? null : localDate.getYear();
     }
 
-    WarekiResult getYearResult() {
-        return new WarekiResult(status, gregorian.substring(0, 4), localDate);
-    }
-
-    WarekiResult getYearMonthResult() {
-        return new WarekiResult(status, gregorian.substring(0, 6), localDate);
-    }
-
     public enum Status {
+        FIRST_YEAR,
+        FIRST_MONTH,
         VALID,
+        LAST_MONTH,
+        LAST_YEAR,
         EXCEEDED,
-        START_MONTH,
-        START_YEAR,
-        ALL0,
-        ALL9,
         INVALID,
         INVALID_ERA,
-        INVALID_DATE
+        INVALID_DATE;
+
+        public boolean isValidDate() {
+            return this == VALID;
+        }
+
+        public boolean isValidYearMonth() {
+            return (FIRST_MONTH.compareTo(this) <= 0) && (this.compareTo(LAST_MONTH) <= 0);
+        }
+
+        public boolean isValidYear() {
+            return (FIRST_YEAR.compareTo(this) <= 0) && (this.compareTo(LAST_YEAR) <= 0);
+        }
+
+        public boolean isAcceptable() {
+            return this.compareTo(EXCEEDED) <= 0;
+        }
+
+        public boolean isInvalid() {
+            return INVALID.compareTo(this) <= 0;
+        }
+
     }
 
 }
