@@ -71,7 +71,7 @@ public class WarekiUtils {
         try {
             LocalDate localDate = LocalDate.of(gYear, 1, 1);
             String gregorian = String.format("%04d", gYear);
-            if (year == range.firstYear) {
+            if (year == 1) {
                 return new WarekiResult(FIRST_YEAR, gregorian, localDate);
             }
             if (year < range.lastYear) {
@@ -98,7 +98,7 @@ public class WarekiUtils {
         try {
             LocalDate localDate = LocalDate.of(gYear, month, 1);
             String gregorian = String.format("%04d%02d", gYear, month);
-            if (year == range.firstYear) {
+            if (year == 1) {
                 if (month < range.firstMonth) {
                     return new WarekiResult(FIRST_YEAR, gregorian, localDate);
                 }
@@ -136,7 +136,7 @@ public class WarekiUtils {
         try {
             LocalDate localDate = LocalDate.of(gYear, month, day);
             String gregorian = String.format("%04d%02d%02d", gYear, month, day);
-            if (year == range.firstYear) {
+            if (year == 1) {
                 if (month < range.firstMonth) {
                     return new WarekiResult(FIRST_YEAR, gregorian, localDate);
                 }
