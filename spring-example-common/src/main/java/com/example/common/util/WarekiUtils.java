@@ -13,10 +13,21 @@ import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 和暦ユーティリティ。
+ *
+ * @author glad2121
+ */
 public class WarekiUtils {
 
+    /**
+     * 年の最大値。
+     */
     static final int MAX_YEAR = 999;
 
+    /**
+     * 元号に対する日付の範囲のマップ。
+     */
     static final Map<String, WarekiRange> WAREKI_RANGE_MAP;
     static {
         Map<String, WarekiRange> map = new LinkedHashMap<>();
@@ -28,21 +39,45 @@ public class WarekiUtils {
         WAREKI_RANGE_MAP = Collections.unmodifiableMap(map);
     }
 
+    /**
+     * 和暦の正規表現パターン。
+     */
     static final Pattern WAREKI_PATTERN =
             Pattern.compile("([A-Z])(\\d{2,3})(\\d{2})?(\\d{2})?");
 
+    /**
+     * 西暦の正規表現パターン。
+     */
     static final Pattern GREGORIAN_PATTERN =
             Pattern.compile("(\\d{4})(\\d{2})?(\\d{2})?");
 
+    /**
+     * 和暦または西暦の正規表現パターン。
+     */
     static final Pattern DATE_PATTERN =
             Pattern.compile("(?:([A-Z])(\\d{2,3})|(\\d{4}))(\\d{2})?(\\d{2})?");
 
+    /**
+     * 不正を表す結果。
+     */
     static final WarekiResult INVALID_RESULT = new WarekiResult(INVALID, null, null);
 
+    /**
+     * 元号の不正を表す結果。
+     */
     static final WarekiResult INVALID_ERA_RESULT = new WarekiResult(INVALID_ERA, null, null);
 
+    /**
+     * 日付の不正を表す結果。
+     */
     static final WarekiResult INVALID_DATE_RESULT = new WarekiResult(INVALID_DATE, null, null);
 
+    /**
+     * 和暦 (年、年月、現月日) をチェックします。
+     *
+     * @param wareki 和暦文字列
+     * @return チェック結果
+     */
     public static WarekiResult checkWareki(String wareki) {
         Matcher m = WAREKI_PATTERN.matcher(wareki);
         if (!m.matches()) {
@@ -61,6 +96,13 @@ public class WarekiUtils {
         return checkWareki(era, year, month, day);
     }
 
+    /**
+     * 和暦年をチェックします。
+     *
+     * @param era  元号
+     * @param year 年
+     * @return チェック結果
+     */
     public static WarekiResult checkWareki(String era, int year) {
         WarekiRange range = WAREKI_RANGE_MAP.get(era);
         if (range == null) {
@@ -88,6 +130,14 @@ public class WarekiUtils {
         }
     }
 
+    /**
+     * 和暦年月をチェックします。
+     *
+     * @param era   元号
+     * @param year  年
+     * @param month 月
+     * @return チェック結果
+     */
     public static WarekiResult checkWareki(String era, int year, int month) {
         WarekiRange range = WAREKI_RANGE_MAP.get(era);
         if (range == null) {
@@ -126,6 +176,15 @@ public class WarekiUtils {
         }
     }
 
+    /**
+     * 和暦年月日をチェックします。
+     *
+     * @param era   元号
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     * @return チェック結果
+     */
     public static WarekiResult checkWareki(String era, int year, int month, int day) {
         WarekiRange range = WAREKI_RANGE_MAP.get(era);
         if (range == null) {
@@ -167,6 +226,13 @@ public class WarekiUtils {
         }
     }
 
+    /**
+     * 和暦年を返します。
+     *
+     * @param gYear  西暦年
+     * @param option 通算オプション
+     * @return 和暦年
+     */
     public static WarekiYear getWarekiYear(int gYear, String option) {
         if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
             throw new DateTimeException("illegal option: " + option);
@@ -191,6 +257,13 @@ public class WarekiUtils {
         return null;
     }
 
+    /**
+     * 和暦年を返します。
+     *
+     * @param yearMonth 西暦年月
+     * @param option 通算オプション
+     * @return 和暦年
+     */
     public static WarekiYear getWarekiYear(YearMonth yearMonth, String option) {
         if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
             throw new DateTimeException("illegal option: " + option);
@@ -218,6 +291,13 @@ public class WarekiUtils {
         return null;
     }
 
+    /**
+     * 和暦年を返します。
+     *
+     * @param localDate 西暦年月日
+     * @param option 通算オプション
+     * @return 和暦年
+     */
     public static WarekiYear getWarekiYear(LocalDate localDate, String option) {
         if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
             throw new DateTimeException("illegal option: " + option);
@@ -247,6 +327,12 @@ public class WarekiUtils {
         return null;
     }
 
+    /**
+     * 西暦 (年、年月、現月日) を和暦に変換します。
+     *
+     * @param gregorian 西暦
+     * @return 和暦
+     */
     public static String toWareki(String gregorian) {
         Matcher m = GREGORIAN_PATTERN.matcher(gregorian);
         if (!m.matches()) {
@@ -264,6 +350,12 @@ public class WarekiUtils {
         return toWareki(LocalDate.of(gYear, month, day));
     }
 
+    /**
+     * 西暦年を和暦に変換します (年末基準)。
+     *
+     * @param gYear 西暦年
+     * @return 和暦年
+     */
     public static String toWareki(int gYear) {
         WarekiYear wYear = getWarekiYear(gYear, null);
         if (wYear == null) {
@@ -272,6 +364,12 @@ public class WarekiUtils {
         return String.format("%s%02d", wYear.getEra(), wYear.getYear());
     }
 
+    /**
+     * 西暦年月を和暦に変換します (月末基準)。
+     *
+     * @param yearMonth 西暦年月
+     * @return 和暦年月
+     */
     public static String toWareki(YearMonth yearMonth) {
         WarekiYear wYear = getWarekiYear(yearMonth, null);
         if (wYear == null) {
@@ -281,6 +379,12 @@ public class WarekiUtils {
                 wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
     }
 
+    /**
+     * 西暦年月日を和暦に変換します。
+     *
+     * @param localDate 西暦年月日
+     * @return 和暦年月日
+     */
     public static String toWareki(LocalDate localDate) {
         WarekiYear wYear = getWarekiYear(localDate, null);
         if (wYear == null) {
@@ -291,12 +395,19 @@ public class WarekiUtils {
                 localDate.getMonthValue(), localDate.getDayOfMonth());
     }
 
+    /**
+     * 和暦または西暦の日付を和暦テキストに変換します。
+     *
+     * @param date 日付
+     * @return 和暦テキスト
+     */
     public static String toWarekiText(String date) {
         Matcher m = DATE_PATTERN.matcher(date);
         if (!m.matches()) {
             throw new DateTimeException(date);
         }
         if (m.group(1) != null) {
+            // 入力が和暦の場合。
             String era = m.group(1);
             int year = Integer.parseInt(m.group(2));
             if (m.group(4) == null) {
@@ -309,6 +420,7 @@ public class WarekiUtils {
             int day = Integer.parseInt(m.group(5));
             return String.format("%s%2d.%2d.%2d", era, year, month, day);
         }
+        // 入力が西暦の場合。
         int gYear = Integer.parseInt(m.group(3));
         if (m.group(4) == null) {
             return toWarekiText(gYear);
@@ -321,6 +433,12 @@ public class WarekiUtils {
         return toWarekiText(LocalDate.of(gYear, month, day));
     }
 
+    /**
+     * 西暦年を和暦テキストに変換します。
+     *
+     * @param gYear 西暦年
+     * @return 和暦テキスト
+     */
     public static String toWarekiText(int gYear) {
         WarekiYear wYear = getWarekiYear(gYear, null);
         if (wYear == null) {
@@ -329,6 +447,12 @@ public class WarekiUtils {
         return String.format("%s%2d", wYear.getEra(), wYear.getYear());
     }
 
+    /**
+     * 西暦年月を和暦テキストに変換します。
+     *
+     * @param yearMonth 西暦年月
+     * @return 和暦テキスト
+     */
     public static String toWarekiText(YearMonth yearMonth) {
         WarekiYear wYear = getWarekiYear(yearMonth, null);
         if (wYear == null) {
@@ -338,6 +462,12 @@ public class WarekiUtils {
                 wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
     }
 
+    /**
+     * 西暦年月日を和暦テキストに変換します。
+     *
+     * @param localDate 西暦年月日
+     * @return 和暦テキスト
+     */
     public static String toWarekiText(LocalDate localDate) {
         WarekiYear wYear = getWarekiYear(localDate, null);
         if (wYear == null) {
@@ -348,6 +478,9 @@ public class WarekiUtils {
                 localDate.getMonthValue(), localDate.getDayOfMonth());
     }
 
+    /**
+     * 元号に対する日付の範囲。
+     */
     @RequiredArgsConstructor
     static class WarekiRange {
         final int baseYear;
