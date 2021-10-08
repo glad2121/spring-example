@@ -35,6 +35,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "1966")
             .hasFieldOrPropertyWithValue("gregorianYear", 1966);
+        assertThat(WarekiUtils.checkWareki("M999"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "2866")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2866);
 
         // 明治 → 大正
         assertThat(WarekiUtils.checkWareki("M45"))
@@ -49,6 +53,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "2010")
             .hasFieldOrPropertyWithValue("gregorianYear", 2010);
+        assertThat(WarekiUtils.checkWareki("T999"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "2910")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2910);
 
         // 大正 → 昭和
         assertThat(WarekiUtils.checkWareki("T15"))
@@ -63,6 +71,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "2024")
             .hasFieldOrPropertyWithValue("gregorianYear", 2024);
+        assertThat(WarekiUtils.checkWareki("S999"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "2924")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2924);
 
         // 昭和 → 平成
         assertThat(WarekiUtils.checkWareki("S64"))
@@ -77,6 +89,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "2087")
             .hasFieldOrPropertyWithValue("gregorianYear", 2087);
+        assertThat(WarekiUtils.checkWareki("H999"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "2987")
+            .hasFieldOrPropertyWithValue("gregorianYear", 2987);
 
         // 平成 → 令和
         assertThat(WarekiUtils.checkWareki("H30"))
@@ -100,9 +116,13 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("gregorian", "2020")
             .hasFieldOrPropertyWithValue("gregorianYear", 2020);
         assertThat(WarekiUtils.checkWareki("R99"))
-            .hasFieldOrPropertyWithValue("status", LAST_YEAR)
+            .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "2117")
             .hasFieldOrPropertyWithValue("gregorianYear", 2117);
+        assertThat(WarekiUtils.checkWareki("R999"))
+            .hasFieldOrPropertyWithValue("status", LAST_YEAR)
+            .hasFieldOrPropertyWithValue("gregorian", "3017")
+            .hasFieldOrPropertyWithValue("gregorianYear", 3017);
     }
 
     @Test
@@ -120,6 +140,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "196612")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(1966, 12));
+        assertThat(WarekiUtils.checkWareki("M99912"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "286612")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2866, 12));
 
         // 明治 → 大正
         assertThat(WarekiUtils.checkWareki("M4507"))
@@ -134,6 +158,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "201012")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2010, 12));
+        assertThat(WarekiUtils.checkWareki("T99912"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "291012")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2910, 12));
 
         // 大正 → 昭和
         assertThat(WarekiUtils.checkWareki("T1512"))
@@ -148,6 +176,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "202412")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2024, 12));
+        assertThat(WarekiUtils.checkWareki("S99912"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "292412")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2924, 12));
 
         // 昭和 → 平成
         assertThat(WarekiUtils.checkWareki("S6401"))
@@ -162,6 +194,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "208712")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2087, 12));
+        assertThat(WarekiUtils.checkWareki("H99912"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "298712")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2987, 12));
 
         // 平成 → 令和
         assertThat(WarekiUtils.checkWareki("H3103"))
@@ -196,6 +232,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "211712")
             .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(2117, 12));
+        assertThat(WarekiUtils.checkWareki("R99912"))
+            .hasFieldOrPropertyWithValue("status", VALID)
+            .hasFieldOrPropertyWithValue("gregorian", "301712")
+            .hasFieldOrPropertyWithValue("yearMonth", YearMonth.of(3017, 12));
     }
 
     @Test
@@ -213,6 +253,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "19661231")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(1966, 12, 31));
+        assertThat(WarekiUtils.checkWareki("M9991231"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "28661231")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2866, 12, 31));
 
         // 明治 → 大正
         assertThat(WarekiUtils.checkWareki("M450729"))
@@ -227,6 +271,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "20101231")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2010, 12, 31));
+        assertThat(WarekiUtils.checkWareki("T9991231"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "29101231")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2910, 12, 31));
 
         // 大正 → 昭和
         assertThat(WarekiUtils.checkWareki("T151224"))
@@ -241,6 +289,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "20241231")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2024, 12, 31));
+        assertThat(WarekiUtils.checkWareki("S9991231"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "29241231")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2924, 12, 31));
 
         // 昭和 → 平成
         assertThat(WarekiUtils.checkWareki("S640107"))
@@ -255,6 +307,10 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", EXCEEDED)
             .hasFieldOrPropertyWithValue("gregorian", "20871231")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2087, 12, 31));
+        assertThat(WarekiUtils.checkWareki("H9991231"))
+            .hasFieldOrPropertyWithValue("status", EXCEEDED)
+            .hasFieldOrPropertyWithValue("gregorian", "29871231")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2987, 12, 31));
 
         // 平成 → 令和
         assertThat(WarekiUtils.checkWareki("H310430"))
@@ -281,6 +337,151 @@ class WarekiUtilsTest {
             .hasFieldOrPropertyWithValue("status", VALID)
             .hasFieldOrPropertyWithValue("gregorian", "21171231")
             .hasFieldOrPropertyWithValue("localDate", LocalDate.of(2117, 12, 31));
+        assertThat(WarekiUtils.checkWareki("R9991231"))
+            .hasFieldOrPropertyWithValue("status", VALID)
+            .hasFieldOrPropertyWithValue("gregorian", "30171231")
+            .hasFieldOrPropertyWithValue("localDate", LocalDate.of(3017, 12, 31));
+    }
+
+    @Test
+    void testGetWarekiYearY() {
+        // 旧暦 → 新暦
+        assertThat(WarekiUtils.getWarekiYear(1873, null)).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(1873, "R")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(1873, "H")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(1873, "S")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(1873, "T")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(1873, "M")).hasToString("M06");
+
+        // 明治 → 大正
+        assertThat(WarekiUtils.getWarekiYear(1911, null)).hasToString("M44");
+        assertThat(WarekiUtils.getWarekiYear(1912, null)).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(1912, "R")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(1912, "H")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(1912, "S")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(1912, "T")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(1912, "M")).hasToString("M45");
+
+        // 大正 → 昭和
+        assertThat(WarekiUtils.getWarekiYear(1925, null)).hasToString("T14");
+        assertThat(WarekiUtils.getWarekiYear(1926, null)).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(1926, "R")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(1926, "H")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(1926, "S")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(1926, "T")).hasToString("T15");
+        assertThat(WarekiUtils.getWarekiYear(1926, "M")).hasToString("M59");
+
+        // 昭和 → 平成
+        assertThat(WarekiUtils.getWarekiYear(1988, null)).hasToString("S63");
+        assertThat(WarekiUtils.getWarekiYear(1989, null)).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(1989, "R")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(1989, "H")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(1989, "S")).hasToString("S64");
+        assertThat(WarekiUtils.getWarekiYear(1989, "T")).hasToString("T78");
+        assertThat(WarekiUtils.getWarekiYear(1989, "M")).hasToString("M122");
+
+        // 平成 → 令和
+        assertThat(WarekiUtils.getWarekiYear(2018, null)).hasToString("H30");
+        assertThat(WarekiUtils.getWarekiYear(2019, null)).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(2019, "R")).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(2019, "H")).hasToString("H31");
+        assertThat(WarekiUtils.getWarekiYear(2019, "S")).hasToString("S94");
+        assertThat(WarekiUtils.getWarekiYear(2019, "T")).hasToString("T108");
+        assertThat(WarekiUtils.getWarekiYear(2019, "M")).hasToString("M152");
+    }
+
+    @Test
+    void testGetWarekiYearYM() {
+        // 旧暦 → 新暦
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), null)).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), "R")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), "H")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), "S")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), "T")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1873, 1), "M")).hasToString("M06");
+
+        // 明治 → 大正
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 6), null)).hasToString("M45");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), null)).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), "R")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), "H")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), "S")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), "T")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1912, 7), "M")).hasToString("M45");
+
+        // 大正 → 昭和
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 11), null)).hasToString("T15");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), null)).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), "R")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), "H")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), "S")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), "T")).hasToString("T15");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1926, 12), "M")).hasToString("M59");
+
+        // 昭和 → 平成
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1988, 12), null)).hasToString("S63");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), null)).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), "R")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), "H")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), "S")).hasToString("S64");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), "T")).hasToString("T78");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(1989, 1), "M")).hasToString("M122");
+
+        // 平成 → 令和
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 4), null)).hasToString("H31");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), null)).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), "R")).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), "H")).hasToString("H31");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), "S")).hasToString("S94");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), "T")).hasToString("T108");
+        assertThat(WarekiUtils.getWarekiYear(YearMonth.of(2019, 5), "M")).hasToString("M152");
+    }
+
+    @Test
+    void testGetWarekiYearYMD() {
+        // 旧暦 → 新暦
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), null)).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), "R")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), "H")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), "S")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), "T")).hasToString("M06");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1873, 1, 1), "M")).hasToString("M06");
+
+        // 明治 → 大正
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 29), null)).hasToString("M45");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), null)).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), "R")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), "H")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), "S")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), "T")).hasToString("T01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1912, 7, 30), "M")).hasToString("M45");
+
+        // 大正 → 昭和
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 24), null)).hasToString("T15");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), null)).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), "R")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), "H")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), "S")).hasToString("S01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), "T")).hasToString("T15");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1926, 12, 25), "M")).hasToString("M59");
+
+        // 昭和 → 平成
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 7), null)).hasToString("S64");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), null)).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), "R")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), "H")).hasToString("H01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), "S")).hasToString("S64");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), "T")).hasToString("T78");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(1989, 1, 8), "M")).hasToString("M122");
+
+        // 平成 → 令和
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 4, 30), null)).hasToString("H31");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), null)).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), "R")).hasToString("R01");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), "H")).hasToString("H31");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), "S")).hasToString("S94");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), "T")).hasToString("T108");
+        assertThat(WarekiUtils.getWarekiYear(LocalDate.of(2019, 5, 1), "M")).hasToString("M152");
     }
 
     @Test
@@ -305,6 +506,7 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWareki("2019")).isEqualTo("R01");
         assertThat(WarekiUtils.toWareki("2020")).isEqualTo("R02");
         assertThat(WarekiUtils.toWareki("2117")).isEqualTo("R99");
+        assertThat(WarekiUtils.toWareki("3017")).isEqualTo("R999");
     }
 
     @Test
@@ -329,6 +531,7 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWareki("201905")).isEqualTo("R0105");
         assertThat(WarekiUtils.toWareki("201906")).isEqualTo("R0106");
         assertThat(WarekiUtils.toWareki("211712")).isEqualTo("R9912");
+        assertThat(WarekiUtils.toWareki("301712")).isEqualTo("R99912");
     }
 
     @Test
@@ -353,6 +556,7 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWareki("20190501")).isEqualTo("R010501");
         assertThat(WarekiUtils.toWareki("20190502")).isEqualTo("R010502");
         assertThat(WarekiUtils.toWareki("21171231")).isEqualTo("R991231");
+        assertThat(WarekiUtils.toWareki("30171231")).isEqualTo("R9991231");
     }
 
     @Test
@@ -377,10 +581,14 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWarekiText("H31")).isEqualTo("H31");
         assertThat(WarekiUtils.toWarekiText("R01")).isEqualTo("R 1");
         assertThat(WarekiUtils.toWarekiText("R02")).isEqualTo("R 2");
+        assertThat(WarekiUtils.toWarekiText("R99")).isEqualTo("R99");
+        assertThat(WarekiUtils.toWarekiText("R999")).isEqualTo("R999");
+
         assertThat(WarekiUtils.toWarekiText("2018")).isEqualTo("H30");
         assertThat(WarekiUtils.toWarekiText("2019")).isEqualTo("R 1");
         assertThat(WarekiUtils.toWarekiText("2020")).isEqualTo("R 2");
         assertThat(WarekiUtils.toWarekiText("2117")).isEqualTo("R99");
+        assertThat(WarekiUtils.toWarekiText("3017")).isEqualTo("R999");
     }
 
     @Test
@@ -405,11 +613,14 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWarekiText("H3105")).isEqualTo("H31. 5");
         assertThat(WarekiUtils.toWarekiText("R0105")).isEqualTo("R 1. 5");
         assertThat(WarekiUtils.toWarekiText("R0106")).isEqualTo("R 1. 6");
-        assertThat(WarekiUtils.toWarekiText("R0112")).isEqualTo("R 1.12");
+        assertThat(WarekiUtils.toWarekiText("R9912")).isEqualTo("R99.12");
+        assertThat(WarekiUtils.toWarekiText("R99912")).isEqualTo("R999.12");
+
         assertThat(WarekiUtils.toWarekiText("201904")).isEqualTo("H31. 4");
         assertThat(WarekiUtils.toWarekiText("201905")).isEqualTo("R 1. 5");
         assertThat(WarekiUtils.toWarekiText("201906")).isEqualTo("R 1. 6");
         assertThat(WarekiUtils.toWarekiText("211712")).isEqualTo("R99.12");
+        assertThat(WarekiUtils.toWarekiText("301712")).isEqualTo("R999.12");
     }
 
     @Test
@@ -434,11 +645,14 @@ class WarekiUtilsTest {
         assertThat(WarekiUtils.toWarekiText("H310501")).isEqualTo("H31. 5. 1");
         assertThat(WarekiUtils.toWarekiText("R010501")).isEqualTo("R 1. 5. 1");
         assertThat(WarekiUtils.toWarekiText("R010502")).isEqualTo("R 1. 5. 2");
-        assertThat(WarekiUtils.toWarekiText("R011231")).isEqualTo("R 1.12.31");
+        assertThat(WarekiUtils.toWarekiText("R991231")).isEqualTo("R99.12.31");
+        assertThat(WarekiUtils.toWarekiText("R9991231")).isEqualTo("R999.12.31");
+
         assertThat(WarekiUtils.toWarekiText("20190430")).isEqualTo("H31. 4.30");
         assertThat(WarekiUtils.toWarekiText("20190501")).isEqualTo("R 1. 5. 1");
         assertThat(WarekiUtils.toWarekiText("20190502")).isEqualTo("R 1. 5. 2");
         assertThat(WarekiUtils.toWarekiText("21171231")).isEqualTo("R99.12.31");
+        assertThat(WarekiUtils.toWarekiText("30171231")).isEqualTo("R999.12.31");
     }
 
 }
