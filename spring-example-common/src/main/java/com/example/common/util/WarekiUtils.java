@@ -234,8 +234,8 @@ public class WarekiUtils {
      * @return 和暦年
      */
     public static WarekiYear getWarekiYear(int gYear, String option) {
-        if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
-            throw new DateTimeException("illegal option: " + option);
+        if (option != null) {
+            assertEra("option", option);
         }
         for (var entry : WAREKI_RANGE_MAP.entrySet()) {
             String era = entry.getKey();
@@ -265,8 +265,8 @@ public class WarekiUtils {
      * @return 和暦年
      */
     public static WarekiYear getWarekiYear(YearMonth yearMonth, String option) {
-        if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
-            throw new DateTimeException("illegal option: " + option);
+        if (option != null) {
+            assertEra("option", option);
         }
         int gYear = yearMonth.getYear();
         int month = yearMonth.getMonthValue();
@@ -299,8 +299,8 @@ public class WarekiUtils {
      * @return 和暦年
      */
     public static WarekiYear getWarekiYear(LocalDate localDate, String option) {
-        if (option != null && !WAREKI_RANGE_MAP.containsKey(option)) {
-            throw new DateTimeException("illegal option: " + option);
+        if (option != null) {
+            assertEra("option", option);
         }
         int gYear = localDate.getYear();
         int month = localDate.getMonthValue();
@@ -328,7 +328,64 @@ public class WarekiUtils {
     }
 
     /**
-     * 西暦 (年、年月、現月日) を和暦に変換します。
+     * 指定された引数の和暦年を返します。
+     *
+     * @param era  元号
+     * @param year 年
+     * @return 和暦年
+     */
+    public static String warekiOf(String era, int year) {
+        assertEra("era", era);
+        assertRange("year", year, 0, MAX_YEAR);
+        return warekiOf0(era, year);
+    }
+
+    /**
+     * 指定された引数の和暦年月を返します。
+     *
+     * @param era   元号
+     * @param year  年
+     * @param month 月
+     * @return 和暦年月
+     */
+    public static String warekiOf(String era, int year, int month) {
+        assertEra("era", era);
+        assertRange("year",  year,  0, MAX_YEAR);
+        assertRange("month", month, 0, 99);
+        return warekiOf0(era, year, month);
+    }
+
+    /**
+     * 指定された引数の和暦年月日を返します。
+     *
+     * @param era   元号
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     * @return 和暦年月日
+     */
+    public static String warekiOf(String era, int year, int month, int day) {
+        assertEra("era", era);
+        assertRange("year",  year,  0, MAX_YEAR);
+        assertRange("month", month, 0, 99);
+        assertRange("day",   day,   0, 99);
+        return warekiOf0(era, year, month, day);
+    }
+
+    static String warekiOf0(String era, int year) {
+        return String.format("%s%02d", era, year);
+    }
+
+    static String warekiOf0(String era, int year, int month) {
+        return String.format("%s%02d%02d", era, year, month);
+    }
+
+    static String warekiOf0(String era, int year, int month, int day) {
+        return String.format("%s%02d%02d%02d", era, year, month, day);
+    }
+
+    /**
+     * 西暦 (年、年月、年月日) を和暦に変換します。
      *
      * @param gregorian 西暦
      * @return 和暦
@@ -361,7 +418,7 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(String.format("%04d", gYear));
         }
-        return String.format("%s%02d", wYear.getEra(), wYear.getYear());
+        return warekiOf0(wYear.getEra(), wYear.getYear());
     }
 
     /**
@@ -375,8 +432,7 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(yearMonth.toString());
         }
-        return String.format("%s%02d%02d",
-                wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
+        return warekiOf0(wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
     }
 
     /**
@@ -390,9 +446,20 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(localDate.toString());
         }
-        return String.format("%s%02d%02d%02d",
-                wYear.getEra(), wYear.getYear(),
+        return warekiOf0(wYear.getEra(), wYear.getYear(),
                 localDate.getMonthValue(), localDate.getDayOfMonth());
+    }
+
+    static String warekiTextOf0(String era, int year) {
+        return String.format("%s%2d", era, year);
+    }
+
+    static String warekiTextOf0(String era, int year, int month) {
+        return String.format("%s%2d.%2d", era, year, month);
+    }
+
+    static String warekiTextOf0(String era, int year, int month, int day) {
+        return String.format("%s%2d.%2d.%2d", era, year, month, day);
     }
 
     /**
@@ -411,14 +478,14 @@ public class WarekiUtils {
             String era = m.group(1);
             int year = Integer.parseInt(m.group(2));
             if (m.group(4) == null) {
-                return String.format("%s%2d", era, year);
+                return warekiTextOf0(era, year);
             }
             int month = Integer.parseInt(m.group(4));
             if (m.group(5) == null) {
-                return String.format("%s%2d.%2d", era, year, month);
+                return warekiTextOf0(era, year, month);
             }
             int day = Integer.parseInt(m.group(5));
-            return String.format("%s%2d.%2d.%2d", era, year, month, day);
+            return warekiTextOf0(era, year, month, day);
         }
         // 入力が西暦の場合。
         int gYear = Integer.parseInt(m.group(3));
@@ -444,7 +511,7 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(String.format("%04d", gYear));
         }
-        return String.format("%s%2d", wYear.getEra(), wYear.getYear());
+        return warekiTextOf0(wYear.getEra(), wYear.getYear());
     }
 
     /**
@@ -458,8 +525,7 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(yearMonth.toString());
         }
-        return String.format("%s%2d.%2d",
-                wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
+        return warekiTextOf0(wYear.getEra(), wYear.getYear(), yearMonth.getMonthValue());
     }
 
     /**
@@ -473,9 +539,20 @@ public class WarekiUtils {
         if (wYear == null) {
             throw new DateTimeException(localDate.toString());
         }
-        return String.format("%s%2d.%2d.%2d",
-                wYear.getEra(), wYear.getYear(),
+        return warekiTextOf0(wYear.getEra(), wYear.getYear(),
                 localDate.getMonthValue(), localDate.getDayOfMonth());
+    }
+
+    static void assertEra(String name, String value) {
+        if (!WAREKI_RANGE_MAP.containsKey(value)) {
+            throw new IllegalArgumentException(name + ": " + value);
+        }
+    }
+
+    static void assertRange(String name, int value, int min, int max) {
+        if (value < min || max < value) {
+            throw new IllegalArgumentException(name + ": " + value);
+        }
     }
 
     /**
