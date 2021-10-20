@@ -2,6 +2,9 @@ package com.example.common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -37,6 +40,18 @@ public class CommonUtils {
 
     static String codePointsToString(int... codePoints) {
         return new String(codePoints, 0, codePoints.length);
+    }
+
+    public static Instant nowInstant() {
+        return Instant.now();
+    }
+
+    public static LocalDate today() {
+        return LocalDate.now();
+    }
+
+    public static int age(LocalDate birthDate, LocalDate baseDate) {
+        return (int) birthDate.until(baseDate, ChronoUnit.YEARS);
     }
 
 }

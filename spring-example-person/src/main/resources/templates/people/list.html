@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Person List</title>
+  <style type="text/css">
+table, th, td {
+  border-width: thin;
+  border-style: solid;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 3pt;
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+<h1>Person List</h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>氏名</th>
+      <th>生年月日</th>
+      <th>年齢</th>
+      <th>性別</th>
+      <th>メモ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="person : ${personListModel.list}">
+      <td th:text="${person.id}"></td>
+      <td th:text="${person.name}"></td>
+      <td th:text="${person.birthDate}"></td>
+      <td th:text="${person.age}"></td>
+      <td th:text="${person.genderName}"></td>
+      <td th:text="${person.memo}"></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
