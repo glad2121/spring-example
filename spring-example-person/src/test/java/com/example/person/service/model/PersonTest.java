@@ -40,7 +40,9 @@ class PersonTest {
 
     @Test
     void testToString() {
-        assertThat(person).hasToString("Person(name=太郎, age=20)");
+        assertThat(person).hasToString("Person(id=null, version=null, name=太郎,"
+                + " birthDate=null, age=20, genderCode=null, genderName=null, memo=null,"
+                + " createdAt=null, createdBy=null, updatedAt=null, updatedBy=null)");
     }
 
 }

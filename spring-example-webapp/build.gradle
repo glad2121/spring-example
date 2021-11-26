@@ -19,12 +19,17 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: 'eclipse-wtp'
+
 dependencies {
+    implementation fileTree(dir: '../spring-example-common/build/libs', include: ['*.jar'])
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'javax.servlet:jstl:1.2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    compileOnly 'javax.servlet.jsp:jsp-api:2.2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
